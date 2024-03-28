@@ -1,16 +1,21 @@
+import os
 from openai import OpenAI
 from flask import Flask, request
 from opentelemetry.instrumentation.openai import OpenAIInstrumentor
 from opentelemetry import trace
 
-# Acquire a tracer
-tracer = trace.get_tracer("diceroller.tracer")
-
 app = Flask(__name__)
 
 OpenAIInstrumentor().instrument()
-client = OpenAI()
 
+# use this config for the real OpenAI API
+# client = OpenAI()
+
+# use this config for the Mock GPT API
+client = OpenAI(
+    api_key=os.environ.get("MOCK_GPT_API_KEY"),
+    base_url="https://mockgpt.wiremockapi.cloud/v1"
+)
 @app.route("/askquestion", methods=['POST'])
 def ask_question():
     current_span = trace.get_current_span()
