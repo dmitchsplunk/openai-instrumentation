@@ -33,7 +33,7 @@ def ask_question():
         current_span.set_attribute("user.type", user_type)
 
         completion = client.chat.completions.create(
-            model="gpt-3.5-turbo",
+            model="gpt-5-nano",
             messages=[
                 {"role": "user", "content": question}
             ]
